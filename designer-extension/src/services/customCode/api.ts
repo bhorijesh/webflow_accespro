@@ -1,5 +1,5 @@
 const base_url = import.meta.env.VITE_NEXTJS_API_URL;
-import { ScriptRegistrationRequest, CodeApplication } from "../../types/types";
+import { ScriptRegistrationRequest, CodeApplication, CustomCode, ApplicationStatus } from "../../types/types";
 
 export const customCodeApi = {
   // Register a new script
@@ -119,4 +119,85 @@ export const customCodeApi = {
       return {};
     }
   },
+};
+
+// Standardized API service with consistent method names
+export const CustomCodeAPI = {
+  /**
+   * Register a new script
+   */
+  registerScript: async (params: ScriptRegistrationRequest, token: string): Promise<CustomCode> => {
+    const response = await customCodeApi.registerScript(params, token);
+    if (!response.success) {
+      throw new Error(response.message || 'Failed to register script');
+    }
+    return response.data;
+  },
+
+  /**
+   * Get list of registered scripts for a site
+   */
+  getRegisteredScripts: async (siteId: string, token: string): Promise<CustomCode[]> => {
+    const response = await customCodeApi.getScripts(siteId, token);
+    if (!response.success) {
+      throw new Error(response.message || 'Failed to get scripts');
+    }
+    return response.data || [];
+  },
+
+  /**
+   * Apply script to a target (site or page)
+   */
+  applyScript: async (params: CodeApplication, token: string): Promise<void> => {
+    const response = await customCodeApi.applyScript(params, token);
+    if (!response.success) {
+      throw new Error(response.message || 'Failed to apply script');
+    }
+  },
+
+  /**
+   * Get application status for a script across targets
+   */
+  getApplicationStatus: async (scriptId: string, siteId: string, token: string): Promise<ApplicationStatus> => {
+    // This would need to be implemented based on your API structure
+    // For now, return the batch status which gives us the current state
+    const status = await customCodeApi.getBatchStatus(siteId, [], token);
+    
+    // Transform the status to match ApplicationStatus interface
+    const applicationStatus: ApplicationStatus = {};
+    
+    if (status[siteId] && status[siteId][scriptId]) {
+      applicationStatus[siteId] = {
+        isApplied: true,
+        location: status[siteId][scriptId].location
+      };
+    }
+    
+    return applicationStatus;
+  },
+
+  /**
+   * Remove script from a target
+   */
+  removeScript: async (scriptId: string, targetType: "site" | "page", targetId: string, token: string): Promise<void> => {
+    // This would need to be implemented in your backend
+    // For now, throw an error indicating it's not implemented
+    const response = await fetch(`${base_url}/api/custom-code/remove`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        scriptId,
+        targetType,
+        targetId
+      }),
+    });
+    
+    const result = await response.json();
+    if (!result.success) {
+      throw new Error(result.message || 'Failed to remove script');
+    }
+  }
 };

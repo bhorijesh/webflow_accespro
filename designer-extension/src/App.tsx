@@ -4,6 +4,7 @@ import { ThemeProvider, Box } from "@mui/material";
 
 import { Navigation } from "./components/Navigation";
 import { CustomCodeDashboard } from "./components/CustomCode/CustomCodeDashboard";
+import { AccessibilityFeatureManager } from "./components/CustomCode/AccessibilityFeatureManager";
 import { AuthScreen } from "./components/AuthScreen";
 import { Dashboard } from "./components/Dashboard";
 import { DevTools } from "./components/DevTools";
@@ -100,6 +101,16 @@ function AppContent() {
                 <AuthScreen onAuth={() => {}} />
               )
             }
+          />
+          <Route 
+            path="/accessibility" 
+            element={
+              sessionToken ? (
+                <AccessibilityFeatureManager />
+              ) : (
+                <AuthScreen onAuth={() => {}} />
+              )
+            } 
           />
           <Route path="/custom-code" element={<CustomCodeDashboard />} />
           <Route
