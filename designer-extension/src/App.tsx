@@ -13,6 +13,7 @@ import { useSites } from "./hooks/useSites"; // Fetches and manages site data us
 import { theme } from "./components/theme";
 import "./App.css";
 import { ElementsDashboard } from "./components/Elements/ElementsDashboard";
+import { SettingsPage } from "./pages/SettingsPage";
 
 /**
  * App.tsx serves as the main entry point and demonstrates:
@@ -113,6 +114,16 @@ function AppContent() {
             } 
           />
           <Route path="/custom-code" element={<CustomCodeDashboard />} />
+          <Route 
+            path="/settings" 
+            element={
+              sessionToken ? (
+                <SettingsPage />
+              ) : (
+                <AuthScreen onAuth={() => {}} />
+              )
+            } 
+          />
           <Route
             path="/elements"
             element={

@@ -13,6 +13,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import CodeIcon from "@mui/icons-material/Code";
 import AccessibilityNewIcon from "@mui/icons-material/AccessibilityNew";
+import SettingsIcon from "@mui/icons-material/Settings";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export function Navigation() {
@@ -23,6 +24,7 @@ export function Navigation() {
   const menuItems = [
     { text: "Dashboard", icon: <DashboardIcon />, path: "/" },
     { text: "Accessibility", icon: <AccessibilityNewIcon />, path: "/accessibility" },
+    { text: "Settings", icon: <SettingsIcon />, path: "/settings" },
     { text: "Custom Code", icon: <CodeIcon />, path: "/custom-code" },
     { text: "Elements", icon: <CodeIcon />, path: "/elements" },
   ];
