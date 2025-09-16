@@ -1,0 +1,25 @@
+const LANGUAGE_OPTIONS = [
+    { label: "Čeština (cs)", value: "cs" },
+    { label: "Deutsch (de)", value: "de" },
+    { label: "English (en)", value: "en" },
+    { label: "Español (es)", value: "es" },
+    { label: "Français (fr)", value: "fr" },
+    { label: "Italiano (it)", value: "it" },
+    { label: "Magyar (hu)", value: "hu" },
+    { label: "Nederlands (nl)", value: "nl" },
+    { label: "Polski (pl)", value: "pl" },
+    { label: "Português (pt)", value: "pt" },
+    { label: "Pусский (ru)", value: "ru" },
+    { label: "Slovenčina (sk)", value: "sk" },
+    { label: "Slovenščina (sl)", value: "sl" },
+    { label: "Türkçe (tr)", value: "tr" },
+    { label: "Ελληνικά (el)", value: "el" },
+    { label: "українська (uk)", value: "uk" },
+    { label: "עברית (he)", value: "he" },
+    { label: "العربية (ar)", value: "ar" },
+    { label: "日本語 (ja)", value: "ja" },
+    { label: "简体中文 (zh)", value: "zh" },
+    { label: "繁體中文 (tw)", value: "tw" },
+];
+
+export default LANGUAGE_OPTIONS;

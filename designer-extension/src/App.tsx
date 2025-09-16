@@ -4,16 +4,16 @@ import { ThemeProvider, Box } from "@mui/material";
 
 import { Navigation } from "./components/Navigation";
 import { CustomCodeDashboard } from "./components/CustomCode/CustomCodeDashboard";
-import { AccessibilityFeatureManager } from "./components/CustomCode/AccessibilityFeatureManager";
+// import { AccessibilityFeatureManager } from "./components/CustomCode/AccessibilityFeatureManager";
 import { AuthScreen } from "./components/AuthScreen";
 import { Dashboard } from "./components/Dashboard";
-import { DevTools } from "./components/DevTools";
+// import { DevTools } from "./components/DevTools";
 import { useAuth } from "./hooks/useAuth"; // Manages authentication state and provides login/logout functionality
 import { useSites } from "./hooks/useSites"; // Fetches and manages site data using the session token
 import { theme } from "./components/theme";
 import "./App.css";
 import { ElementsDashboard } from "./components/Elements/ElementsDashboard";
-import { SettingsPage } from "./pages/SettingsPage";
+import { MenuSettings, WidgetSettings } from "./components/Settings";
 
 /**
  * App.tsx serves as the main entry point and demonstrates:
@@ -29,7 +29,7 @@ import { SettingsPage } from "./pages/SettingsPage";
 // This is the main App Component. It handles the initial setup and rendering of the Dashboard.
 function AppContent() {
   const [hasClickedFetch, setHasClickedFetch] = useState(false);
-  const { user, sessionToken, exchangeAndVerifyIdToken, logout } = useAuth();
+  const { user, sessionToken, exchangeAndVerifyIdToken, } = useAuth();
   const { sites, isLoading, isError, error, fetchSites } = useSites(
     sessionToken,
     hasClickedFetch
@@ -40,7 +40,7 @@ function AppContent() {
 
   useEffect(() => {
     // Set the extension size to large
-    webflow.setExtensionSize("large");
+    webflow.setExtensionSize({ width: 2500, height: 4000 });
 
     // Only run auth flow if not already checked
     if (!hasCheckedToken.current) {
@@ -103,7 +103,7 @@ function AppContent() {
               )
             }
           />
-          <Route 
+          {/* <Route 
             path="/accessibility" 
             element={
               sessionToken ? (
@@ -112,13 +112,37 @@ function AppContent() {
                 <AuthScreen onAuth={() => {}} />
               )
             } 
-          />
+          /> */}
           <Route path="/custom-code" element={<CustomCodeDashboard />} />
           <Route 
-            path="/settings" 
+            path="/menu-settings" 
             element={
               sessionToken ? (
-                <SettingsPage />
+                <MenuSettings 
+                  onChange={(settings: any) => {
+                    localStorage.setItem('accessibilityMenuSettings', JSON.stringify(settings));
+                    console.log('Menu settings changed:', settings);
+                  }}
+                  settings={JSON.parse(localStorage.getItem('accessibilityMenuSettings') || '{}')}
+                />
+              ) : (
+                <AuthScreen onAuth={() => {}} />
+              )
+            } 
+          />
+          <Route 
+            path="/widget-settings" 
+            element={
+              sessionToken ? (
+                <WidgetSettings 
+                  onSettingsChange={(settings: any) => {
+                    localStorage.setItem('accessibilityWidgetSettings', JSON.stringify(settings));
+                    console.log('Widget settings changed:', settings);
+                  }}
+                  settings={JSON.parse(localStorage.getItem('accessibilityWidgetSettings') || '{}')}
+                  saveSettings={() => {}}
+                  loading={false}
+                />
               ) : (
                 <AuthScreen onAuth={() => {}} />
               )
@@ -136,7 +160,7 @@ function AppContent() {
           />{" "}
         </Routes>
       </Box>
-      <DevTools logout={logout} setHasClickedFetch={setHasClickedFetch} />
+      {/* <DevTools logout={logout} setHasClickedFetch={setHasClickedFetch} /> */}
     </BrowserRouter>
   );
 }
